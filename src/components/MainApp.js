@@ -1,12 +1,14 @@
 import React from 'react'
-import { CounterComponent } from './CounterComponent'
 import {Provider} from "react-redux"
+
+
 import store from '../store/store'
-export const CounterApp = () => {
+import { RouterApp } from './RouterApp'
+export const MainApp = () => {
     return (
         <Provider store= {store}> 
 
-            <CounterComponent />
+            <RouterApp />
             
         </Provider>
     )
