@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { decrementCounter, incrementAsyncCounter, resetCounter as reset } from '../actions/counter';
+import { apiAsync } from '../actions/api';
+import { decrementCounter, incrementAsyncCounter, incrementCounter, resetCounter as reset } from '../actions/counter';
 
 export const CounterComponent = () => {
     const data = useSelector(store => store);
-    const {counter} = data;
+    const {counter, dataApi} = data;
+    const {img, name, nickname} = dataApi;
     const dispatch =  useDispatch();
+    useEffect(() => {
+        dispatch(apiAsync(counter))
+    }, [counter]);
     const handlerIncrementCounter = () => {
-        dispatch(incrementAsyncCounter(1));
+        dispatch(incrementCounter(1));
     }
     const handlerDecrementCounter = () => {
         dispatch(decrementCounter(1));
@@ -16,17 +21,26 @@ export const CounterComponent = () => {
         dispatch(reset(0));
     }
     return (
-        <div>
-            {counter}
-            <button onClick={handlerIncrementCounter}>
-                +1
-            </button>
-            <button onClick={handlerDecrementCounter}>
-                -1
-            </button>
-            <button onClick={resetCounter}>
-                reset
-            </button>
+        <div className="container">
+            <div className="row align-items-start">
+                <div className="col">
+                    <button className="btn btn-primary" onClick={handlerIncrementCounter}>
+                        +1
+                    </button>
+                </div>
+                <div className="col">
+                    <img src={img} width="400"/>
+                    <span>{name}</span>q
+                </div>
+                <div className="col">
+                    <button className="btn btn-danger" onClick={handlerDecrementCounter}>
+                        -1
+                    </button>
+                </div>
+               
+                
+                
+            </div>
         </div>
     )
 }

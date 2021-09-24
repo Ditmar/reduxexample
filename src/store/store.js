@@ -2,11 +2,13 @@
 import {createStore, combineReducers, applyMiddleware, compose} from "redux"
 import { counterReducer } from "../reducers/counterReducer";
 import thunk from 'redux-thunk';
+import { apiReducers } from "../reducers/apiReducers";
 
 
 
 const reducers = combineReducers({
-    counter: counterReducer
+    counter: counterReducer,
+    dataApi: apiReducers 
 });
 const composeEnhancers =
   typeof window === 'object' &&
