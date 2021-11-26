@@ -1,14 +1,21 @@
 import React from "react";
 import { MdCancel } from "react-icons/md";
-import { useSelector } from "react-redux";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Route, Switch, Redirect, Link } from "react-router-dom";
 import { MainDashBoard } from "./MainDashBoard";
+import { MdLockOpen } from "react-icons/md";
+import { authLogoutAsync } from "../../actions/auth";
 
 import "./styles.css";
+
 export const DashBoardComponent = ({ children, ...rest }) => {
   const { auth } = useSelector((state) => state);
-  const { user } = auth;
-  return user == null ? (
+  const { token } = auth;
+  const dispatch = useDispatch();
+  const handlerLogOut = () => {
+    dispatch(authLogoutAsync());
+  };
+  return token == null ? (
     <Redirect to="/login" />
   ) : (
     <>
@@ -52,8 +59,9 @@ export const DashBoardComponent = ({ children, ...rest }) => {
             </a>
           </li>
           <li>
-            <a href="#">
-              <i className="far fa-envelope"></i>Contact
+            <a href="#" onClick={handlerLogOut}>
+              <MdLockOpen />
+              Log/Out
             </a>
           </li>
         </ul>

@@ -1,27 +1,33 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { MdPersonPin, MdVpnKey } from "react-icons/md";
 import { useForm } from "../../hooks/useForm";
 import { useDispatch } from "react-redux";
-import { authAsync } from "../../actions/auth";
+import { authAsync, auth } from "../../actions/auth";
 import { useSelector } from "react-redux";
+
 export const LoginComponent = () => {
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state);
-  const { user, msnerror } = auth;
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token != null) {
+      dispatch(auth(token));
+    }
+  }, []);
+  const { auth: authRename, msnerror } = useSelector((state) => state);
+  const { token } = authRename;
   const [form, handlerChangeForm, handlerResetForm] = useForm({
-    username: "Pepito",
-    password: "1234",
+    email: "pepe@gmail.com",
+    password: "123456",
   });
-
-  const { username, password } = form;
+  const { email, password } = form;
   const handlerSubmit = (e) => {
     e.preventDefault();
-    dispatch(authAsync(username, password));
+    dispatch(authAsync(email, password));
   };
   return (
     <>
-      {user == null ? (
+      {token == null ? (
         <div className="container">
           <div className="d-flex justify-content-center h-100">
             <div className="card">
@@ -39,8 +45,8 @@ export const LoginComponent = () => {
                     <input
                       type="text"
                       className="form-control"
-                      name="username"
-                      value={username}
+                      name="email"
+                      value={email}
                       onChange={handlerChangeForm}
                       autoComplete="off"
                       placeholder="username"
